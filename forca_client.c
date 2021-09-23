@@ -7,33 +7,35 @@
 #include "forca.h"
 
 
-void
-math_100(char *host)
+void math_100(char *host)
 {
 	CLIENT *clnt;
 	float  *result_1;
 	values  sum_100_arg;
 
-#ifndef	DEBUG
+	printf("Digite o numero 1: ");
+	scanf("%f", &sum_100_arg.n1);
+	printf("Digite o numero 2: ");
+	scanf("%f", &sum_100_arg.n2);
+
 	clnt = clnt_create (host, MATH, VERSION, "udp");
-	if (clnt == NULL) {
+	if (clnt == (CLIENT *)NULL) {
 		clnt_pcreateerror (host);
 		exit (1);
 	}
-#endif	/* DEBUG */
 
 	result_1 = sum_100(&sum_100_arg, clnt);
 	if (result_1 == (float *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-#ifndef	DEBUG
-	clnt_destroy (clnt);
-#endif	 /* DEBUG */
+	
+	// clnt_destroy (clnt);
+
+	printf("result_1: %f\n", *result_1);
 }
 
 
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
 	char *host;
 
@@ -43,5 +45,5 @@ main (int argc, char *argv[])
 	}
 	host = argv[1];
 	math_100 (host);
-exit (0);
+	exit (0);
 }
