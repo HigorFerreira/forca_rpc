@@ -15,9 +15,9 @@ struct game_response{
     int player_id;
 };
 
-program GAME_FORCA{
+program TESTE{
     version VERSION {
         game_response start_game(game*)=10;
         game_response trying(game*)=20;
     }=1;
-}=1344357464;
+}=15464;

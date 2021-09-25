@@ -81,3 +81,12 @@ game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
 
 	return &result;
 }
+
+game_response *trying_1_svc(game *argp, struct svc_req *rqstp){
+	static game_response result;
+
+	printf("CURRENT WORD: %s\n", g->current_word);
+	printf("HIDDEN  WORD: %s\n", g->hidden_word);
+
+	return &result;
+}
