@@ -26,7 +26,6 @@ rpcgen -a -C forca.x
 ```
 para gerar os arquivos de cabeçalho e os códigos em c.
 Após a geração desses arquivos, são feitas as devidas implementações, e para que não seja necessário compllar os aruivos um por um, utilizamos o **make**.
-### Building objects and executables
 ```bash
 make -f Makefile.forca
 ```
