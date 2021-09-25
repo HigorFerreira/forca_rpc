@@ -16,7 +16,7 @@ game_forca_1(char *host)
 
 	game_response *res;
 
-	clnt = clnt_create (host, GAME_FORCA, VERSION, "tcp");
+	clnt = clnt_create (host, GAME_FORCA, VERSION, "udp");
 	if (clnt == NULL) {
 		clnt_pcreateerror (host);
 		exit (1);
@@ -35,23 +35,25 @@ game_forca_1(char *host)
 
 	game game_res = start_res->g;
 	char try_char;
-	do{
+	while (1){
 		printf("Palavra: %s\n", game_res.hidden_word);
 		printf("Dica: %s\n", game_res.tip);
 		printf("Sua tentativa: ");
 		scanf("%c", &try_char);
-		printf("CHAR: %c\n", try_char);
-		
+		while (getchar() != '\n');
 		game try;
 		try.player_trying = try_char;
 		try.id_player_trying = start_res->player_id;
 
-		res = trying_1(&game_res, clnt);
+		res = trying_1(&try, clnt);
+		if (res == (game_response *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		memcpy((void*)(&game_res), res, sizeof(game));
 
-		printf("\n\n");
-
-		game_res = res->g;
-	}while(1);
+		printf("\n");
+	}
+	
 }
 
 
@@ -66,5 +68,5 @@ main (int argc, char *argv[])
 	}
 	host = argv[1];
 	game_forca_1 (host);
-	exit (0);
+exit (0);
 }

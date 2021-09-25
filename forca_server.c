@@ -46,8 +46,8 @@ game *g;
 //game started?
 int started = 0;
 
-
-game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
+game_response *
+start_game_1_svc(game *argp, struct svc_req *rqstp)
 {
 	static game_response result;
 
@@ -82,11 +82,28 @@ game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
 	return &result;
 }
 
-game_response *trying_1_svc(game *argp, struct svc_req *rqstp){
-	static game_response result;
+game_response *
+trying_1_svc(game *argp, struct svc_req *rqstp)
+{
+	static game_response  result;
 
-	printf("CURRENT WORD: %s\n", g->current_word);
-	printf("HIDDEN  WORD: %s\n", g->hidden_word);
+	while(!g->can_go);
+	g->can_go = 0;
+	printf("Player %i is trying \"%c\"\n", argp->id_player_trying, argp->player_trying);
+	for(int i = 0; i < strlen(g->current_word); i++){
+		printf("%c == %c ? %i\n", g->current_word[i], g->player_trying, g->current_word[i] == argp->player_trying);
+		if(g->current_word[i] == argp->player_trying){
+			g->hidden_word[i] = argp->player_trying;
+		}
+	}
+
+	printf("HIDDEN WORD: %s\n", g->hidden_word);
+
+	// Game response
+	memcpy((void*)(&result.g), g, sizeof(game));
+	result.player_id = argp->id_player_trying;
+
+	g->can_go = 1;
 
 	return &result;
 }
