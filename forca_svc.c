@@ -33,7 +33,7 @@ game_forca_1(struct svc_req *rqstp, register SVCXPRT *transp)
 
 	case start_game:
 		_xdr_argument = (xdrproc_t) xdr_game;
-		_xdr_result = (xdrproc_t) xdr_int;
+		_xdr_result = (xdrproc_t) xdr_start_game_response;
 		local = (char *(*)(char *, struct svc_req *)) start_game_1_svc;
 		break;
 

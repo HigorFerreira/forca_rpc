@@ -25,24 +25,25 @@ struct game {
 };
 typedef struct game game;
 
-struct player {
-	int id;
+struct start_game_response {
+	game g;
+	int player_id;
 };
-typedef struct player player;
+typedef struct start_game_response start_game_response;
 
 #define GAME_FORCA 1344357464
 #define VERSION 1
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define start_game 10
-extern  int * start_game_1(game *, CLIENT *);
-extern  int * start_game_1_svc(game *, struct svc_req *);
+extern  start_game_response * start_game_1(game *, CLIENT *);
+extern  start_game_response * start_game_1_svc(game *, struct svc_req *);
 extern int game_forca_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define start_game 10
-extern  int * start_game_1();
-extern  int * start_game_1_svc();
+extern  start_game_response * start_game_1();
+extern  start_game_response * start_game_1_svc();
 extern int game_forca_1_freeresult ();
 #endif /* K&R C */
 
@@ -50,11 +51,11 @@ extern int game_forca_1_freeresult ();
 
 #if defined(__STDC__) || defined(__cplusplus)
 extern  bool_t xdr_game (XDR *, game*);
-extern  bool_t xdr_player (XDR *, player*);
+extern  bool_t xdr_start_game_response (XDR *, start_game_response*);
 
 #else /* K&R C */
 extern bool_t xdr_game ();
-extern bool_t xdr_player ();
+extern bool_t xdr_start_game_response ();
 
 #endif /* K&R C */
 

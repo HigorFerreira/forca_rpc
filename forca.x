@@ -8,12 +8,13 @@ struct game{
     int turn;
 };
 
-struct player{
-    int id;
+struct start_game_response{
+    game g;
+    int player_id;
 };
 
 program GAME_FORCA{
     version VERSION {
-        int start_game(game*)=10;
+        start_game_response start_game(game*)=10;
     }=1;
 }=1344357464;

@@ -104,11 +104,13 @@ xdr_game (XDR *xdrs, game *objp)
 }
 
 bool_t
-xdr_player (XDR *xdrs, player *objp)
+xdr_start_game_response (XDR *xdrs, start_game_response *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_int (xdrs, &objp->id))
+	 if (!xdr_game (xdrs, &objp->g))
+		 return FALSE;
+	 if (!xdr_int (xdrs, &objp->player_id))
 		 return FALSE;
 	return TRUE;
 }

@@ -11,7 +11,7 @@ void
 game_forca_1(char *host)
 {
 	CLIENT *clnt;
-	int  *player_id;
+	start_game_response  *start_res;
 	game  start_game_1_arg;
 
 	clnt = clnt_create (host, GAME_FORCA, VERSION, "tcp");
@@ -20,19 +20,24 @@ game_forca_1(char *host)
 		exit (1);
 	}
 
-	player_id = start_game_1(&start_game_1_arg, clnt);
-	if (player_id == (int *) NULL) {
+	start_res = start_game_1(&start_game_1_arg, clnt);
+	if (start_res == (start_game_response *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
 
-	if(*player_id == -1){
+	if(start_res->player_id == -1){
 		clnt_perror (clnt, "Room fully crowded");
 		exit(1);
 	}
-	printf("Seu id e: %i\n", *player_id);
+	printf("Seu id e: %i\n", start_res->player_id);
 
+	game game_res = start_res->g;
+	char trying;
 	do{
-
+		printf("Palavra: %s\n", game_res.hidden_word);
+		printf("Dica: %s\n", game_res.tip);
+		printf("Sua tentativa: ");
+		scanf("%c", &trying);
 	}while(1);
 }
 

@@ -45,30 +45,36 @@ game *g;
 int started = 0;
 
 
-int * start_game_1_svc(game *argp, struct svc_req *rqstp)
+start_game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
 {
-	static int  result;
+	static start_game_response result;
 
 	if(!started){
 		printf("Starting game\n");
 		g = gameServerStart(words, tips);
 
 		//Getting player id
-		result = g->players_slots[g->players_in_room];
+		int id = g->players_slots[g->players_in_room];
 		g->players_in_room++;
-		printf("The player id %i started the game\n", result);
+		printf("The player id %i started the game\n", id);
+
+		memcpy((void*)(&result.g), g, sizeof(game));
+		result.player_id = id;
 
 		// Flag that tell the game has already started
 		started = 1;
 	}
 	else if(started && g->players_in_room < 4){
 		//Getting player id
-		result = g->players_slots[g->players_in_room];
+		int id = g->players_slots[g->players_in_room];
 		g->players_in_room++;
-		printf("The player id %i enters the game\n", result);
+		printf("The player id %i enters the game\n", id);
+
+		memcpy((void*)(&result.g), g, sizeof(game));
+		result.player_id = id;
 	}
 	else{
-		result = -1;
+		result.player_id = -1;
 	}
 
 	return &result;
