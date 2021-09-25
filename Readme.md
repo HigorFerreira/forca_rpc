@@ -1,6 +1,6 @@
 # Jogo da forca usando RPC
 ##### Potifícia Universidade Católica de Goiás
-**Professor:** Cláudio Martins Garcia
+**Professor:** Cláudio Martins Garcia<br>
 **Aluno:** Higor Ferreira Alves Santos
 
 
