@@ -32,6 +32,8 @@ game *gameServerStart(char words[][50], char tips[][100]){
 		_game->players_slots[i] = i;
 	_game->players_in_room = 0;
 
+	_game->can_go = 1;
+
 	return _game;
 }
 
@@ -45,9 +47,9 @@ game *g;
 int started = 0;
 
 
-start_game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
+game_response * start_game_1_svc(game *argp, struct svc_req *rqstp)
 {
-	static start_game_response result;
+	static game_response result;
 
 	if(!started){
 		printf("Starting game\n");

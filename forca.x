@@ -5,16 +5,19 @@ struct game{
     char hidden_word[50];
     char tip[100];
     int can_go;
-    int turn;
+    
+    char player_trying;
+    int id_player_trying;
 };
 
-struct start_game_response{
+struct game_response{
     game g;
     int player_id;
 };
 
 program GAME_FORCA{
     version VERSION {
-        start_game_response start_game(game*)=10;
+        game_response start_game(game*)=10;
+
     }=1;
 }=1344357464;

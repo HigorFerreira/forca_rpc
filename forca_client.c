@@ -11,7 +11,7 @@ void
 game_forca_1(char *host)
 {
 	CLIENT *clnt;
-	start_game_response  *start_res;
+	game_response  *start_res;
 	game  start_game_1_arg;
 
 	clnt = clnt_create (host, GAME_FORCA, VERSION, "tcp");
@@ -21,7 +21,7 @@ game_forca_1(char *host)
 	}
 
 	start_res = start_game_1(&start_game_1_arg, clnt);
-	if (start_res == (start_game_response *) NULL) {
+	if (start_res == (game_response *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
 
