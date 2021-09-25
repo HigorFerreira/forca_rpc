@@ -31,25 +31,38 @@ game_forca_1(char *host)
 		clnt_perror (clnt, "Room fully crowded");
 		exit(1);
 	}
-	printf("Seu id e: %i\n", start_res->player_id);
+	const int myId = start_res->player_id;
+	printf("Seu id e: %i\n", myId);
 
 	game game_res = start_res->g;
 	char try_char;
 	while (1){
-		printf("Palavra: %s\n", game_res.hidden_word);
-		printf("Dica: %s\n", game_res.tip);
-		printf("Sua tentativa: ");
-		scanf("%c", &try_char);
-		while (getchar() != '\n');
-		game try;
-		try.player_trying = try_char;
-		try.id_player_trying = start_res->player_id;
+		if(!game_res.winner){
+			printf("Palavra: %s\n", game_res.hidden_word);
+			printf("Dica: %s\n", game_res.tip);
+			printf("Sua tentativa: ");
+			scanf("%c", &try_char);
+			while (getchar() != '\n');
+			game try;
+			try.player_trying = try_char;
+			try.id_player_trying = myId;
 
-		res = trying_1(&try, clnt);
-		if (res == (game_response *) NULL) {
-			clnt_perror (clnt, "call failed");
+			res = trying_1(&try, clnt);
+			if (res == (game_response *) NULL) {
+				clnt_perror (clnt, "call failed");
+			}
+			memcpy((void*)(&game_res), (void *)(&res->g), sizeof(game));
 		}
-		memcpy((void*)(&game_res), res, sizeof(game));
+		else{
+			if(game_res.winner_id == myId){
+				printf("A palavra e: %s\nParabens, voce ganhou o jogo.\n", game_res.hidden_word);
+				exit(0);
+			}
+			else{
+				printf("A palavra era: %s\nO player %i ganhou o jogo.\n", game_res.hidden_word, game_res.winner_id);
+				exit(0);
+			}
+		}
 
 		printf("\n");
 	}

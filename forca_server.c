@@ -34,7 +34,15 @@ game *gameServerStart(char words[][50], char tips[][100]){
 
 	_game->can_go = 1;
 
+	_game->winner = 0;
+	_game->winner_id = -1;
+
 	return _game;
+}
+
+int check_winner(char *word){
+	for(int i = 0; i < strlen(word); i++) if(word[i] == '-') return 0;
+	return 1;
 }
 
 //Words that appear in game
@@ -91,13 +99,20 @@ trying_1_svc(game *argp, struct svc_req *rqstp)
 	g->can_go = 0;
 	printf("Player %i is trying \"%c\"\n", argp->id_player_trying, argp->player_trying);
 	for(int i = 0; i < strlen(g->current_word); i++){
-		printf("%c == %c ? %i\n", g->current_word[i], g->player_trying, g->current_word[i] == argp->player_trying);
+		// printf("%c == %c ? %i\n", g->current_word[i], g->player_trying, g->current_word[i] == argp->player_trying);
 		if(g->current_word[i] == argp->player_trying){
 			g->hidden_word[i] = argp->player_trying;
 		}
 	}
 
-	printf("HIDDEN WORD: %s\n", g->hidden_word);
+	// printf("HIDDEN WORD: %s\n", g->hidden_word);
+	if(!g->winner){
+		if(check_winner(g->hidden_word)){
+			printf("Player %i won the game.\n", argp->id_player_trying);
+		g->winner = 1;
+		g->winner_id = argp->id_player_trying;
+	}
+	}
 
 	// Game response
 	memcpy((void*)(&result.g), g, sizeof(game));

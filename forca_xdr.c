@@ -45,8 +45,19 @@ xdr_game (XDR *xdrs, game *objp)
 			 return FALSE;
 		 if (!xdr_char (xdrs, &objp->player_trying))
 			 return FALSE;
-		 if (!xdr_int (xdrs, &objp->id_player_trying))
-			 return FALSE;
+		buf = XDR_INLINE (xdrs, 3 * BYTES_PER_XDR_UNIT);
+		if (buf == NULL) {
+			 if (!xdr_int (xdrs, &objp->id_player_trying))
+				 return FALSE;
+			 if (!xdr_int (xdrs, &objp->winner))
+				 return FALSE;
+			 if (!xdr_int (xdrs, &objp->winner_id))
+				 return FALSE;
+		} else {
+			IXDR_PUT_LONG(buf, objp->id_player_trying);
+			IXDR_PUT_LONG(buf, objp->winner);
+			IXDR_PUT_LONG(buf, objp->winner_id);
+		}
 		return TRUE;
 	} else if (xdrs->x_op == XDR_DECODE) {
 		buf = XDR_INLINE (xdrs, (1 + ( 4 )) * BYTES_PER_XDR_UNIT);
@@ -81,8 +92,19 @@ xdr_game (XDR *xdrs, game *objp)
 			 return FALSE;
 		 if (!xdr_char (xdrs, &objp->player_trying))
 			 return FALSE;
-		 if (!xdr_int (xdrs, &objp->id_player_trying))
-			 return FALSE;
+		buf = XDR_INLINE (xdrs, 3 * BYTES_PER_XDR_UNIT);
+		if (buf == NULL) {
+			 if (!xdr_int (xdrs, &objp->id_player_trying))
+				 return FALSE;
+			 if (!xdr_int (xdrs, &objp->winner))
+				 return FALSE;
+			 if (!xdr_int (xdrs, &objp->winner_id))
+				 return FALSE;
+		} else {
+			objp->id_player_trying = IXDR_GET_LONG(buf);
+			objp->winner = IXDR_GET_LONG(buf);
+			objp->winner_id = IXDR_GET_LONG(buf);
+		}
 	 return TRUE;
 	}
 
@@ -105,6 +127,10 @@ xdr_game (XDR *xdrs, game *objp)
 	 if (!xdr_char (xdrs, &objp->player_trying))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->id_player_trying))
+		 return FALSE;
+	 if (!xdr_int (xdrs, &objp->winner))
+		 return FALSE;
+	 if (!xdr_int (xdrs, &objp->winner_id))
 		 return FALSE;
 	return TRUE;
 }

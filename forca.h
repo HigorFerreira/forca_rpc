@@ -23,6 +23,8 @@ struct game {
 	int can_go;
 	char player_trying;
 	int id_player_trying;
+	int winner;
+	int winner_id;
 };
 typedef struct game game;
 

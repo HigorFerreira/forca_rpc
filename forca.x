@@ -8,6 +8,8 @@ struct game{
     
     char player_trying;
     int id_player_trying;
+    int winner;
+    int winner_id;
 };
 
 struct game_response{
